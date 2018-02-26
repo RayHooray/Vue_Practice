@@ -20,12 +20,27 @@
   v-cloak : 使用它防止闪现表达式, 与css配合: [v-cloak] { display: none }
 -->
 <div id="example">
-
+  <p v-text="url"></p>
+  <p v-html="url"></p>
+  <img src="imgSrc" alt="logo" :id="myid">
 </div>
 
-<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript" src="../vue.js"></script>
 <script type="text/javascript">
+  new Vue({
+      el: "#example",
+      data: {
+          url: "<a href='http://www.youku.com'>优酷</a>",
+          myid: "ray890108",
+          imgSrc: "http://cn.vuejs.org/images/logo.png"
+      },
 
+      methods: {
+          showMsg: function () {
+              alert(this.$refs.message.textContent)
+          }
+      }
+  })
 </script>
 </body>
 </html>

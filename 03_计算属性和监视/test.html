@@ -19,47 +19,57 @@
 <div id="demo">
   姓: <input type="text" placeholder="First Name" v-model="firstName"><br>
   名: <input type="text" placeholder="Last Name" v-model="lastName"><br>
-  姓名1(单向): <input type="text" placeholder="Full Name1" v-model="fullName"><br>
+  姓名1(单向): <input type="text" placeholder="Full Name1" v-model="fullName1"><br>
   姓名2(单向): <input type="text" placeholder="Full Name2" v-model="fullName2"><br>
-  姓名3(双向): <input type="text" placeholder="Full Name3"><br>
+  姓名3(双向): <input type="text" placeholder="Full Name3" v-model="fullName3"><br>
 </div>
 
-<script type="text/javascript" src="../vue.js"></script>
-<script type="text/javascript">
+<script src="../vue.js"></script>
+<script>
   const vm = new Vue({
       el: '#demo',
       data: {
           firstName: 'Bryant',
           lastName: 'Kobe',
+          // fullName1: 'Kobe Bryant'
           fullName2: 'Kobe Bryant'
       },
       computed: {
-          fullName () {
-              return this.firstName + ' ' + this.lastName;
+          fullName1 () {
+              // console.log(this)  //this 指向vm
+              return this.lastName + ' ' + this.firstName
           },
 
           fullName3: {
-              get: function () {
-                  return this.firstName + ' ' + this.lastName;
+              //显示val结果时调用，用来根据vm其他数据来计算返回结果
+              get () {
+                  console.log('fullName3.get()')
+                  return this.lastName + ' ' + this.firstName
               },
-
-              set: function (value) {
-                  var names = value.split(' ')
-                  this.firstName = names[0]
-                  this.lastName = names[1]
+              //属性值发生改变时调用，用来监视当前属性值得变化，更新相关的属性数据
+              set (val) {
+                  const names = val.split(' ');
+                  this.lastName = names[0];
+                  this.firstName = names[1]
               }
           }
       },
-
       watch: {
-          lastName (newVal, oldVal) {
-              this.fullName2 = this.firstName + ' ' + newVal
+          firstName: function (val) {
+              this.fullName2 = this.lastName + ' ' + val
           }
-      }
+      //     lastName: function (val) {
+      //         this.fullName2 = val + ' ' + this.firstName
+      //     }
+       }
   })
 
-  vm.$watch('firstname', function (val) {
-      this.fullName2 = val + '' + this.lastName
+  // vm.$watch('firstName', function (val) { //val 是firstName最新的值， 当firstName发生改变时自动调用
+  //     //更新fullName2
+  //     this.fullName2 = this.lastName + ' ' + val
+  // })
+  vm.$watch('lastName', function (val) {
+      this.fullName2 = val + ' ' + this.firstName
   })
 </script>
 </body>
